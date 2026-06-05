@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
+
+
 app = FastAPI()
 
 app.add_middleware(
@@ -27,6 +29,8 @@ class SensorData(BaseModel):
     # soil: int
     # light: int   # NEW
 
+
+
 @app.post("/data")
 def receive_data(data: SensorData):
     data_store["temperature"] = data.temperature
@@ -34,6 +38,10 @@ def receive_data(data: SensorData):
     # data_store["soil"] = data.soil
     # data_store["light"] = data.light  # NEW
     return {"status": "ok"}
+
+@app.get("/")
+def root():
+    return {"message": "API is running"}
 
 @app.get("/api")
 def get_data():
