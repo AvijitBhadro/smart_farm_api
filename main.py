@@ -30,9 +30,6 @@ class SensorData(BaseModel):
     rain: int
     soil_temp: float
 
-@app.get("/")
-def health():
-    return {"status": "running"}
 
 @app.post("/data")
 def receive_data(data: SensorData):
