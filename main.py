@@ -12,6 +12,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ---------------- SENSOR DATA ----------------
+
 data_store = {
     "temperature": 0.0,
     "humidity": 0.0,
@@ -20,6 +22,10 @@ data_store = {
     "rain": 0,
     "soil_temp": 0.0
 }
+
+# ---------------- PUMP ----------------
+
+pump_state = False
 
 
 class SensorData(BaseModel):
@@ -30,6 +36,8 @@ class SensorData(BaseModel):
     rain: int
     soil_temp: float
 
+
+# ================= SENSOR API =================
 
 @app.post("/data")
 def receive_data(data: SensorData):
@@ -47,3 +55,24 @@ def receive_data(data: SensorData):
 @app.get("/api")
 def get_data():
     return data_store
+
+
+# ================= PUMP API =================
+
+@app.get("/pump/on")
+def pump_on():
+    global pump_state
+    pump_state = True
+    return {"pump": True}
+
+
+@app.get("/pump/off")
+def pump_off():
+    global pump_state
+    pump_state = False
+    return {"pump": False}
+
+
+@app.get("/pump")
+def get_pump():
+    return {"pump": pump_state}
